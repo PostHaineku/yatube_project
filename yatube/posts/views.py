@@ -3,7 +3,7 @@ from .models import Post, Group
 
 
 def index(request):
-    posts = Post.objects.order_by('-pub_date')[:10]
+    posts = Post.objects.select_related('author')
     # В словаре context отправляем информацию в шаблон
     context = {
         'posts': posts,
@@ -13,7 +13,11 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.filter(group=group).order_by('-pub_date')[:10]
+    posts = Post.objects.filter(group=group).select_related('group')
+    # Я попробовал через ManyToMany сделать привязку модели Group
+    # к модели Post, но ничего не вышло, видимо я так и не понял
+    # к какому полю нужно привязывать и окончательно запутался
+    # решил оставить как было
     context = {
         'group': group,
         'posts': posts,

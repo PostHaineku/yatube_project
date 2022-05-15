@@ -19,6 +19,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ["-pub_date"][:10]
+        # если я заменяю цифру на константу, вылетает TypeError
 
 
 class Group(models.Model):
